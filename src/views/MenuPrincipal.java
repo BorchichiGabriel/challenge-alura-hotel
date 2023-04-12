@@ -8,6 +8,7 @@ import java.awt.Panel;
 import java.awt.Color;
 import java.awt.SystemColor;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -77,10 +78,10 @@ public class MenuPrincipal extends JFrame {
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
-		JLabel lblCopyR = new JLabel("Desarrollado por Fulanita de Tal © 2023");
+		JLabel lblCopyR = new JLabel("Desarrollado por Borchichi Gabriel © 2023");
 		lblCopyR.setBounds(315, 11, 284, 19);
 		lblCopyR.setForeground(new Color(240, 248, 255));
-		lblCopyR.setFont(new Font("Roboto", Font.PLAIN, 16));
+		lblCopyR.setFont(new Font("Roboto", Font.PLAIN, 14));
 		panel_1.add(lblCopyR);
 		
 		//Barra para controlar la ventana 
@@ -108,7 +109,8 @@ public class MenuPrincipal extends JFrame {
 		btnexit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.exit(0);
+				continuarPrograma();
+				//System.exit(0);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -174,4 +176,13 @@ public class MenuPrincipal extends JFrame {
         int y = evt.getYOnScreen();
         this.setLocation(x - xMouse, y - yMouse);
 }
+    //Muestra un cuadro de dialogo para confirmar el cierre de la app
+    public void continuarPrograma(){
+		int opc =  JOptionPane.showConfirmDialog(null, "¿Está seguro que desea salir?");
+		
+		if(opc==0) {
+			JOptionPane.showMessageDialog(null, "Programa Finalizado");
+			System.exit(0);
+		}
+	}
 }
