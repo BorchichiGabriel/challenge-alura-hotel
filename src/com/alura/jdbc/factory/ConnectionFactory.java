@@ -8,11 +8,11 @@ import javax.sql.DataSource;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 public class ConnectionFactory {
-private DataSource dataSource;
+	private DataSource dataSource;
 	
 	public ConnectionFactory() {
 		ComboPooledDataSource pooledDataSource = new ComboPooledDataSource();
-		//Esto estaba en var "ver ConnectionFactory en el ejemplo"
+		
 		pooledDataSource.setJdbcUrl("jdbc:mysql://127.0.0.1/hotel_alura?useTimeZone=true&serverTimeZone=UTC");
 		pooledDataSource.setUser("root");
 		pooledDataSource.setPassword("");
