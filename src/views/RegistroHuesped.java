@@ -6,6 +6,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import java.awt.Color;
+
+import com.alura.jdbc.controller.HuespedesController;
+import com.alura.jdbc.controller.ReservasController;
+import com.alura.jdbc.modelo.Huespedes;
+import com.alura.jdbc.modelo.Reserva;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -38,6 +43,8 @@ public class RegistroHuesped extends JFrame {
 	private JLabel labelExit;
 	private JLabel labelAtras;
 	int xMouse, yMouse;
+	
+	private HuespedesController huespedesController;
 
 	/**
 	 * Launch the application.
@@ -46,7 +53,7 @@ public class RegistroHuesped extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RegistroHuesped frame = new RegistroHuesped();
+					RegistroHuesped frame = new RegistroHuesped(0);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -59,6 +66,8 @@ public class RegistroHuesped extends JFrame {
 	 * Create the frame.
 	 */
 	public RegistroHuesped(int idReserva) {
+		
+		this.huespedesController = new HuespedesController();
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(RegistroHuesped.class.getResource("/imagenes/lOGO-50PX.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -264,6 +273,16 @@ public class RegistroHuesped extends JFrame {
 		btnguardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 		
 		JLabel labelGuardar = new JLabel("GUARDAR");
+		labelGuardar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (txtNombre.getText() != null && txtApellido.getText() != null && txtTelefono.getText() != null) {		
+					registrarHuesped();
+				} else {
+					JOptionPane.showMessageDialog(null, "Debes llenar todos los campos.");
+				}
+			}
+		});
 		labelGuardar.setHorizontalAlignment(SwingConstants.CENTER);
 		labelGuardar.setForeground(Color.WHITE);
 		labelGuardar.setFont(new Font("Roboto", Font.PLAIN, 18));
@@ -316,6 +335,28 @@ public class RegistroHuesped extends JFrame {
 		labelExit.setHorizontalAlignment(SwingConstants.CENTER);
 		labelExit.setForeground(SystemColor.black);
 		labelExit.setFont(new Font("Roboto", Font.PLAIN, 18));
+	}
+	
+	private void registrarHuesped(){
+		
+		String FechaNac = ((JTextField)txtFechaN.getDateEditor().getUiComponent()).getText();
+		Integer idReserva  = Integer.valueOf(txtNreserva.getText());
+		Huespedes nuevoHuesped = new Huespedes(txtNombre.getText()
+				,txtApellido.getText()
+				,java.sql.Date.valueOf(FechaNac)
+				,txtNacionalidad.getSelectedItem().toString()
+				,txtTelefono.getText()
+				, idReserva);
+		System.out.println("sysout:"+nuevoHuesped.toString());
+		huespedesController.guardar(nuevoHuesped);
+		
+		JOptionPane.showMessageDialog(contentPane, "Huesped registrado con éxito, ID:"+ nuevoHuesped.getId()
+		+"\nSu numero de Reserva es:"+nuevoHuesped.getIdReserva());
+		//
+		Exito exito = new Exito();
+		exito.setVisible(true);
+		dispose();
+		
 	}
 	
 	

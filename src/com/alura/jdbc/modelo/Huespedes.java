@@ -29,10 +29,10 @@ public class Huespedes {
 		this.telefono = telefono;
 	}
 
-	public Huespedes(Integer id, String nombre, String apellido, Date fechaNac, String nacionalidad, String telefono,
+	public Huespedes(String nombre, String apellido, Date fechaNac, String nacionalidad, String telefono,
 			Integer idReserva) {
-		super();
-		this.id = id;
+		
+		
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.fechaNac = fechaNac;
