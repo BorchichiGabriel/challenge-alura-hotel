@@ -6,6 +6,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import com.alura.jdbc.controller.ReservasController;
+import com.alura.jdbc.modelo.Huespedes;
+import com.alura.jdbc.modelo.Reserva;
+
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -13,6 +18,8 @@ import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.SystemColor;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -38,6 +45,7 @@ public class Busqueda extends JFrame {
 	private JLabel labelAtras;
 	private JLabel labelExit;
 	int xMouse, yMouse;
+	private ReservasController reservasController;
 
 	/**
 	 * Launch the application.
@@ -59,6 +67,9 @@ public class Busqueda extends JFrame {
 	 * Create the frame.
 	 */
 	public Busqueda() {
+		
+		this.reservasController = new ReservasController();
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Busqueda.class.getResource("/imagenes/lupa2.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 571);
@@ -226,6 +237,20 @@ public class Busqueda extends JFrame {
 		contentPane.add(btnbuscar);
 		
 		JLabel lblBuscar = new JLabel("BUSCAR");
+		lblBuscar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				modelo.setRowCount(0);
+				modeloHuesped.setRowCount(0);
+				if(txtBuscar.getText().isEmpty()){
+					JOptionPane.showMessageDialog(null, "Por favor rellene el cuadro de busqueda");
+				}else if(tbReservas.isEnabled() && esInteger(txtBuscar.getText())) {
+					cargaReporte();
+				}else {
+					cargaReporteApellidos();
+				}
+			}
+		});
 		lblBuscar.setBounds(0, 0, 122, 35);
 		btnbuscar.add(lblBuscar);
 		lblBuscar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -260,6 +285,47 @@ public class Busqueda extends JFrame {
 		lblEliminar.setBounds(0, 0, 122, 35);
 		btnEliminar.add(lblEliminar);
 		setResizable(false);
+	}
+	
+	private void cargaReporte() {
+		
+        var contenido = reservasController.listar(Integer.valueOf(txtBuscar.getText()));
+        
+        
+        contenido.forEach(reserva -> {
+        	modelo.addRow(new Object[] { reserva.getId()
+        			, reserva.getFechaE()
+        			, reserva.getFechaS()
+        			, reserva.getValor()
+        			, reserva.getFormaPago()});
+        });
+    }
+	
+	private void cargaReporteApellidos() {
+		
+        var contenido = reservasController.listarReservasApellido(txtBuscar.getText());
+        
+        
+        contenido.forEach(huesped -> {
+        	modeloHuesped.addRow(new Object[] { huesped.getId()
+        			, huesped.getNombre()
+        			, huesped.getApellido()
+        			, huesped.getFechaNac()
+        			, huesped.getNacionalidad()
+        			, huesped.getTelefono()
+        			, huesped.getIdReserva()});
+        });
+    }
+	//Retorna true si el texto recibido es parseable a int
+	public boolean esInteger(String texto){
+		boolean resultado;
+		try {
+			Integer.parseInt(texto);
+			resultado = true;
+		}catch(NumberFormatException e) {
+			resultado = false;
+		}
+		return resultado;
 	}
 	
 //Código que permite mover la ventana por la pantalla según la posición de "x" y "y"

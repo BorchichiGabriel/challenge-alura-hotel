@@ -11,6 +11,18 @@ public class Huespedes {
 	private String telefono;
 	private Integer idReserva;
 	
+	public Huespedes(Integer id, String nombre, String apellido, Date fechaNac, String nacionalidad, String telefono,
+			Integer idReserva) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.fechaNac = fechaNac;
+		this.nacionalidad = nacionalidad;
+		this.telefono = telefono;
+		this.idReserva = idReserva;
+	}
+
 	public Huespedes(String nombre, String apellido, Date fechaNac, String nacionalidad, String telefono) {
 		this.nombre = nombre;
 		this.apellido = apellido;
