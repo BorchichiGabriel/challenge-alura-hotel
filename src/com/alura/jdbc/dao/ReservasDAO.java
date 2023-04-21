@@ -103,5 +103,33 @@ public List<Reserva> listarReservas(Integer nroReserva) {
 		
 		return resultado;
 	}
+
+	public int modificar(Integer id, Date fechaE, Date fechaS, String valor, String formaPago) {
+		System.out.println("me ejecute id,dato: "+id+" "+formaPago);
+			try (con){
+				final PreparedStatement statement = con.prepareStatement("UPDATE RESERVAS SET "
+							    + " FECHA_ENTRADA = ?" 
+							    + ", FECHA_SALIDA = ?" 
+							    + ", VALOR = ?"
+							    + ", FORMA_DE_PAGO = ?"
+							    + " WHERE ID =?" );
+					try(statement){
+						statement.setDate(1, fechaE);
+				    	statement.setDate(2, fechaS);
+				    	statement.setDouble(3, Double.parseDouble(valor));
+				    	statement.setString(4, formaPago);
+				    	statement.setInt(5, id);
+						
+						statement.execute();
+						int updateCount=statement.getUpdateCount();
+						System.out.println("me ejecute dato: "+formaPago);
+						return updateCount;
+					}
+	    	}catch(SQLException e) {
+	    		throw new RuntimeException(e);
+	    	}
+			
+	
+	}
 	
 }

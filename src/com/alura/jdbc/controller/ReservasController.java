@@ -1,6 +1,7 @@
 package com.alura.jdbc.controller;
 
 
+import java.sql.Date;
 import java.util.List;
 
 import com.alura.jdbc.dao.ReservasDAO;
@@ -20,6 +21,10 @@ public class ReservasController {
 	
 	public List<Reserva> listar(Integer nroReserva){
 		return this.reservasDao.listarReservas(nroReserva);
+	}
+	public int modificar(Integer id, Date fechaE, Date fechaS, String valor, String formaPago) {
+		int result = this.reservasDao.modificar(id, fechaE, fechaS, valor, formaPago);
+		return result;
 	}
 	
 
