@@ -22,8 +22,5 @@ public class ReservasController {
 		return this.reservasDao.listarReservas(nroReserva);
 	}
 	
-	public List<Huespedes> listarReservasApellido(String apellido){
-		return this.reservasDao.listarPorApellido(apellido);
-	}
 
 }

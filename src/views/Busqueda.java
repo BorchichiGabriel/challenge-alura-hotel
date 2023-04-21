@@ -7,6 +7,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import com.alura.jdbc.controller.HuespedesController;
 import com.alura.jdbc.controller.ReservasController;
 import com.alura.jdbc.modelo.Huespedes;
 import com.alura.jdbc.modelo.Reserva;
@@ -46,6 +47,7 @@ public class Busqueda extends JFrame {
 	private JLabel labelExit;
 	int xMouse, yMouse;
 	private ReservasController reservasController;
+	private HuespedesController huespedesController;
 
 	/**
 	 * Launch the application.
@@ -69,6 +71,7 @@ public class Busqueda extends JFrame {
 	public Busqueda() {
 		
 		this.reservasController = new ReservasController();
+		this.huespedesController = new HuespedesController();
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Busqueda.class.getResource("/imagenes/lupa2.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -303,7 +306,7 @@ public class Busqueda extends JFrame {
 	
 	private void cargaReporteApellidos() {
 		
-        var contenido = reservasController.listarReservasApellido(txtBuscar.getText());
+        var contenido = huespedesController.listarReservasApellido(txtBuscar.getText());
         
         
         contenido.forEach(huesped -> {
