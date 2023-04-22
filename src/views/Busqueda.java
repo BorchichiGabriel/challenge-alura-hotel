@@ -273,7 +273,14 @@ public class Busqueda extends JFrame {
 		lblEditar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				modificar();
+				
+				if(txtBuscar.getText().isEmpty()){
+					JOptionPane.showMessageDialog(null, "Por favor rellene el cuadro de busqueda");
+				}else if(tbReservas.isEnabled() && esInteger(txtBuscar.getText())) {
+					modificar();
+				}else {
+					modificarHuesped();
+				}
 			}
 		});
 		lblEditar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -328,89 +335,6 @@ public class Busqueda extends JFrame {
         });
     }
 	
-	/* private void modificar() {
-    	if (tieneFilaElegida()) {
-            JOptionPane.showMessageDialog(this, "Por favor, elije un item");
-            return;
-        }	
-    
-    		
-    		
-			Optional.ofNullable(modelo.getValueAt(tbReservas.getSelectedRow(), tbReservas.getSelectedColumn()))
-	        .ifPresentOrElse(fila -> {
-	            Integer id = Integer.valueOf(modelo.getValueAt(tbReservas.getSelectedRow(), 0).toString());
-	            Date fechaE = (Date) modelo.getValueAt(tbReservas.getSelectedRow(), 1);
-	            Date fechaS = (Date) modelo.getValueAt(tbReservas.getSelectedRow(), 2);
-	            String valor = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 3);
-	            String formaPago = (String) modelo.getValueAt(tbReservas.getSelectedRow(), 4);
-	            var filasModificadas = this.reservasController.modificar(id, fechaE, fechaS, valor, formaPago);
-	
-	            JOptionPane.showMessageDialog(this, String.format("%d item modificado con éxito!", filasModificadas));
-	        }, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
-	
-    	}*/
-	/*private void modificar() {
-	    // Verificar si hay filas seleccionadas
-	    if (tbReservas.getSelectedRowCount() == 0) {
-	        JOptionPane.showMessageDialog(this, "Por favor, elije al menos un item");
-	        return;
-	    }
-	    
-	    // Obtener las filas seleccionadas
-	    int[] filasSeleccionadas = tbReservas.getSelectedRows();
-	    int itemsModificados=0;
-	    
-	    // Iterar sobre las filas seleccionadas
-	    for (int fila : filasSeleccionadas) {
-	        Integer id = Integer.valueOf(modelo.getValueAt(fila, 0).toString());
-	        Date fechaE = (Date) modelo.getValueAt(fila, 1);
-	        Date fechaS = (Date) modelo.getValueAt(fila, 2);
-	        String valor = (String) modelo.getValueAt(fila, 3);
-	        String formaPago = (String) modelo.getValueAt(fila, 4);
-	        
-	        // Mostrar un diálogo para editar los valores de las celdas seleccionadas
-	        // Aquí deberías implementar la lógica para modificar los valores de las celdas
-	        // en función de la acción del usuario
-	        // Podrías utilizar JOptionPane.showInputDialog para mostrar un cuadro de diálogo
-	        // en el que el usuario pueda ingresar los nuevos valores
-	        // Por ejemplo:
-	        String nuevoFechaE = JOptionPane.showInputDialog(this, "Nuevo valor:", fechaE);
-	        if (nuevoFechaE != null) {
-	            fechaE = Date.valueOf(nuevoFechaE);
-	            itemsModificados++;
-	        }
-	        String nuevoFechaS = JOptionPane.showInputDialog(this, "Nuevo valor:", fechaS);
-	        if (nuevoFechaS != null) {
-	            fechaS = Date.valueOf(nuevoFechaS);
-	            itemsModificados++;
-	        }
-	        String nuevoValor = JOptionPane.showInputDialog(this, "Nuevo valor:", valor);
-	        if (nuevoValor != null) {
-	            valor = nuevoValor;
-	            itemsModificados++;
-	        }
-	        String nuevoFormaPago = JOptionPane.showInputDialog(this, "Nuevo valor:", formaPago);
-	        if (nuevoFormaPago != null) {
-	            formaPago = nuevoFormaPago;
-	            itemsModificados++;
-	        }
-	        
-	        
-	        // Llamar al método modificar() de la clase ReservasController
-	        var filasModificadas = this.reservasController.modificar(id, fechaE, fechaS, valor, formaPago);
-	
-	        // Verificar si se modificó alguna fila y actualizar la tabla
-	        if (filasModificadas > 0) {
-	            modelo.setValueAt(fechaE, fila, 1);
-	            modelo.setValueAt(fechaS, fila, 2);
-	            modelo.setValueAt(valor, fila, 3);
-	            modelo.setValueAt(formaPago, fila, 4);
-	        }
-	    }
-	    
-	    // Mostrar un mensaje de éxito
-	    JOptionPane.showMessageDialog(this, String.format("%d item(s) modificado(s) con éxito!", itemsModificados));
-	}*/
 	
 	private void modificar() {
 	    // Verificar si hay filas seleccionadas
@@ -431,7 +355,7 @@ public class Busqueda extends JFrame {
 	        String valor = (String) modelo.getValueAt(fila, 3);
 	        String formaPago = (String) modelo.getValueAt(fila, 4);
 	        
-	        // Crear un diálogo de edición personalizado
+	        // Crea un cuadro de diálogo de edición personalizado
 	        EditarReservaDialog editarReservaDialog = new EditarReservaDialog(this,"Editar");
 	        editarReservaDialog.setVisible(true);
 	        
@@ -459,11 +383,63 @@ public class Busqueda extends JFrame {
 	    // Mostrar un mensaje de éxito
 	    JOptionPane.showMessageDialog(this, String.format("%d item(s) modificado(s) con éxito!", itemsModificados));
 	}
+	
+	private void modificarHuesped() {
+	    // Verificar si hay filas seleccionadas
+	    if (tbHuespedes.getSelectedRowCount() == 0) {
+	        JOptionPane.showMessageDialog(this, "Por favor, elije al menos un item");
+	        return;
+	    }
+	    
+	    // Obtener las filas seleccionadas
+	    int[] filasSeleccionadas = tbHuespedes.getSelectedRows();
+	    int itemsModificados=0;
+	    
+	    // Iterar sobre las filas seleccionadas
+	    for (int fila : filasSeleccionadas) {
+	        Integer id = Integer.valueOf(modeloHuesped.getValueAt(fila, 0).toString());
+	        String nombre = (String) modeloHuesped.getValueAt(fila, 1);
+	        String apellido = (String) modeloHuesped.getValueAt(fila, 2);
+	        Date fechaNacimiento = (Date) modeloHuesped.getValueAt(fila, 3);
+	        String nacionalidad = (String) modeloHuesped.getValueAt(fila, 4);
+	        String telefono = (String) modeloHuesped.getValueAt(fila, 5);
+	        Integer idReserva = Integer.valueOf(modeloHuesped.getValueAt(fila, 6).toString());
+	        
+	        
+	        // Crea un cuadro de diálogo de edición personalizado
+	        EditarHuespedDialog editarHuespedDialog = new EditarHuespedDialog(this,"Editar");
+	        editarHuespedDialog.setVisible(true);
+	        
+	        // Obtener los valores editados del diálogo
+	        if (editarHuespedDialog.isAceptado()) {
+	        	nombre = editarHuespedDialog.getNombre();
+	        	apellido = editarHuespedDialog.getApellido();
+	        	fechaNacimiento = Date.valueOf(editarHuespedDialog.getFechaNacimiento());
+	        	nacionalidad = editarHuespedDialog.getNacionalidad();
+	        	telefono = editarHuespedDialog.getTelefono();
+	            itemsModificados++;
+	        }
+	        
+	        // Llamar al método modificar() de la clase HuespedesController
+	        var filasModificadas = this.huespedesController.modificarHuesped(id, nombre, apellido, fechaNacimiento, nacionalidad, telefono, idReserva);
 
+	        // Verificar si se modificó alguna fila y actualizar la tabla
+	        if (filasModificadas > 0) {
+	            modeloHuesped.setValueAt(nombre, fila, 1);
+	            modeloHuesped.setValueAt(apellido, fila, 2);
+	            modeloHuesped.setValueAt(fechaNacimiento, fila, 3);
+	            modeloHuesped.setValueAt(nacionalidad, fila, 4);
+	            modeloHuesped.setValueAt(telefono, fila, 5);
+	        }
+	    }
+	    
+	    // Mostrar un mensaje de éxito
+	    JOptionPane.showMessageDialog(this, String.format("%d item(s) modificado(s) con éxito!", itemsModificados));
+	}
 	
 	
-	private boolean tieneFilaElegida() {
-        return tbReservas.getSelectedRowCount() == 0 || tbReservas.getSelectedColumnCount() == 0 ;
+	private boolean tieneFilaElegida(JTable tb) {
+        return tb.getSelectedRowCount() == 0 || tb.getSelectedColumnCount() == 0 ;
         //|| tbHuespedes.getSelectedRowCount() == 0 || tbHuespedes.getSelectedColumnCount() == 0 
     } 
 	
@@ -494,4 +470,63 @@ public class Busqueda extends JFrame {
 	        int y = evt.getYOnScreen();
 	        this.setLocation(x - xMouse, y - yMouse);
 }
+	    
+	  //PROTOTIPO DE FUNCION EDITAR
+		/*private void modificar() {
+		    // Verificar si hay filas seleccionadas
+		    if (tbReservas.getSelectedRowCount() == 0) {
+		        JOptionPane.showMessageDialog(this, "Por favor, elije al menos un item");
+		        return;
+		    }
+		    
+		    // Obtener las filas seleccionadas
+		    int[] filasSeleccionadas = tbReservas.getSelectedRows();
+		    int itemsModificados=0;
+		    
+		    // Iterar sobre las filas seleccionadas
+		    for (int fila : filasSeleccionadas) {
+		        Integer id = Integer.valueOf(modelo.getValueAt(fila, 0).toString());
+		        Date fechaE = (Date) modelo.getValueAt(fila, 1);
+		        Date fechaS = (Date) modelo.getValueAt(fila, 2);
+		        String valor = (String) modelo.getValueAt(fila, 3);
+		        String formaPago = (String) modelo.getValueAt(fila, 4);
+		        
+		        
+		        String nuevoFechaE = JOptionPane.showInputDialog(this, "Nuevo valor:", fechaE);
+		        if (nuevoFechaE != null) {
+		            fechaE = Date.valueOf(nuevoFechaE);
+		            itemsModificados++;
+		        }
+		        String nuevoFechaS = JOptionPane.showInputDialog(this, "Nuevo valor:", fechaS);
+		        if (nuevoFechaS != null) {
+		            fechaS = Date.valueOf(nuevoFechaS);
+		            itemsModificados++;
+		        }
+		        String nuevoValor = JOptionPane.showInputDialog(this, "Nuevo valor:", valor);
+		        if (nuevoValor != null) {
+		            valor = nuevoValor;
+		            itemsModificados++;
+		        }
+		        String nuevoFormaPago = JOptionPane.showInputDialog(this, "Nuevo valor:", formaPago);
+		        if (nuevoFormaPago != null) {
+		            formaPago = nuevoFormaPago;
+		            itemsModificados++;
+		        }
+		        
+		        
+		        // Llamar al método modificar() de la clase ReservasController
+		        var filasModificadas = this.reservasController.modificar(id, fechaE, fechaS, valor, formaPago);
+		
+		        // Verificar si se modificó alguna fila y actualizar la tabla
+		        if (filasModificadas > 0) {
+		            modelo.setValueAt(fechaE, fila, 1);
+		            modelo.setValueAt(fechaS, fila, 2);
+		            modelo.setValueAt(valor, fila, 3);
+		            modelo.setValueAt(formaPago, fila, 4);
+		        }
+		    }
+		    
+		    // Mostrar un mensaje de éxito
+		    JOptionPane.showMessageDialog(this, String.format("%d item(s) modificado(s) con éxito!", itemsModificados));
+		}*/
 }

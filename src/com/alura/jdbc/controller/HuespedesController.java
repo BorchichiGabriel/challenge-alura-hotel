@@ -1,6 +1,7 @@
 package com.alura.jdbc.controller;
 
 
+import java.sql.Date;
 import java.util.List;
 
 import com.alura.jdbc.dao.HuespedesDAO;
@@ -22,5 +23,11 @@ public class HuespedesController {
 	
 	public List<Huespedes> listarReservasApellido(String apellido){
 		return this.huespedesDao.listarPorApellido(apellido);
+	}
+
+	public int modificarHuesped(Integer id, String nombre, String apellido, Date fechaNacimiento,
+			String nacionalidad, String telefono, Integer idReserva) {
+		int result = huespedesDao.modificar(id, nombre, apellido, fechaNacimiento, nacionalidad, telefono, idReserva);
+		return result;
 	}
 }

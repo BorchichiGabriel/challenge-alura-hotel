@@ -105,7 +105,7 @@ public List<Reserva> listarReservas(Integer nroReserva) {
 	}
 
 	public int modificar(Integer id, Date fechaE, Date fechaS, String valor, String formaPago) {
-		System.out.println("me ejecute id,dato: "+id+" "+formaPago);
+		
 			try (con){
 				final PreparedStatement statement = con.prepareStatement("UPDATE RESERVAS SET "
 							    + " FECHA_ENTRADA = ?" 
@@ -122,7 +122,7 @@ public List<Reserva> listarReservas(Integer nroReserva) {
 						
 						statement.execute();
 						int updateCount=statement.getUpdateCount();
-						System.out.println("me ejecute dato: "+formaPago);
+						
 						return updateCount;
 					}
 	    	}catch(SQLException e) {
