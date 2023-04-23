@@ -30,4 +30,9 @@ public class HuespedesController {
 		int result = huespedesDao.modificar(id, nombre, apellido, fechaNacimiento, nacionalidad, telefono, idReserva);
 		return result;
 	}
+
+	public int eliminar(Integer id) {
+		int result = this.huespedesDao.eliminar(id);
+		return result;
+	}
 }

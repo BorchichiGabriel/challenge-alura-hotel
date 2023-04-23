@@ -131,5 +131,25 @@ public List<Reserva> listarReservas(Integer nroReserva) {
 			
 	
 	}
+
+	public int eliminar(Integer id) {
+		int updateCount;
+		try(con){
+			final PreparedStatement statement = con.prepareStatement(
+					"DELETE FROM RESERVAS WHERE ID =?");
+					try(statement){
+					statement.setInt(1, id);
+					
+					statement.execute();
+					
+					updateCount = statement.getUpdateCount();
+				
+				
+					}
+	    }catch(SQLException e) {
+	    	throw new RuntimeException(e);
+	    }
+		return updateCount;
+	}
 	
 }

@@ -26,6 +26,10 @@ public class ReservasController {
 		int result = this.reservasDao.modificar(id, fechaE, fechaS, valor, formaPago);
 		return result;
 	}
+	public int eliminar(Integer id) {
+		int result = reservasDao.eliminar(id);
+		return result;
+	}
 	
 
 }

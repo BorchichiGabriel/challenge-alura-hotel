@@ -123,7 +123,6 @@ public class HuespedesDAO {
 			    	statement.setString(4, nacionalidad);
 			    	statement.setString(5, telefono);
 			    	statement.setInt(6, id);
-					
 					statement.execute();
 					int updateCount=statement.getUpdateCount();
 					
@@ -133,6 +132,26 @@ public class HuespedesDAO {
     		throw new RuntimeException(e);
     	}
 		
+	}
+
+	public int eliminar(Integer id) {
+		int updateCount;
+		try(con){
+			final PreparedStatement statement = con.prepareStatement(
+					"DELETE FROM HUESPEDES WHERE ID =?");
+					try(statement){
+					statement.setInt(1, id);
+					
+					statement.execute();
+					
+					updateCount = statement.getUpdateCount();
+				
+				
+					}
+	    }catch(SQLException e) {
+	    	throw new RuntimeException(e);
+	    }
+		return updateCount;
 	}
 
 }
