@@ -154,4 +154,46 @@ public class HuespedesDAO {
 		return updateCount;
 	}
 
+	public List<Huespedes> cargarHuespedes() {
+		List<Huespedes> resultado = new ArrayList<>();
+		
+		try {
+				
+				final PreparedStatement statement = con.prepareStatement(
+						"SELECT H.ID, H.NOMBRE, H.APELLIDO, H.FECHA_DE_NACIMIENTO, H.NACIONALIDAD, H.TELEFONO, H.ID_RESERVA "
+						+ "FROM HUESPEDES H");
+				
+				try(statement){
+					
+					statement.execute();
+					final ResultSet resultSet = statement.getResultSet();
+					//final ResultSet resultSet = statement.executeQuery();
+				
+					try(resultSet){
+						while (resultSet.next()) {
+							Integer huespedID = resultSet.getInt("H.ID");
+							Date fechaNac = resultSet.getDate("H.FECHA_DE_NACIMIENTO");
+							String nombre = resultSet.getString("H.NOMBRE");
+							String lastName = resultSet.getString("H.APELLIDO");
+							String nacionalidad = resultSet.getString("H.NACIONALIDAD");
+							String telefono = resultSet.getString("H.TELEFONO");
+							Integer reservaID = resultSet.getInt("H.ID_RESERVA");
+							
+							var huesped = new Huespedes(huespedID, nombre, lastName, fechaNac, nacionalidad, telefono, reservaID);
+									
+										resultado.add(huesped);
+										
+									
+						}
+					};
+							
+						
+				}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		
+		return resultado;
+	}
+
 }

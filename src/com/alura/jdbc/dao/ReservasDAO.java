@@ -151,5 +151,45 @@ public List<Reserva> listarReservas(Integer nroReserva) {
 	    }
 		return updateCount;
 	}
+
+	public List<Reserva> mostrarReservas() {
+		List<Reserva> resultado = new ArrayList<>();
+		
+		try {
+				
+				final PreparedStatement statement = con.prepareStatement(
+						"SELECT R.ID, R.FECHA_ENTRADA, R.FECHA_SALIDA, R.VALOR, R.FORMA_DE_PAGO "
+						+ "FROM RESERVAS R");
+				
+				try(statement){
+					
+					statement.execute();
+					final ResultSet resultSet = statement.getResultSet();
+					//final ResultSet resultSet = statement.executeQuery();
+				
+					try(resultSet){
+						while (resultSet.next()) {
+							Integer reservaID = resultSet.getInt("R.ID");
+							Date fechaE = resultSet.getDate("R.FECHA_ENTRADA");
+							Date fechaS = resultSet.getDate("R.FECHA_SALIDA");
+							String precio = String.valueOf(resultSet.getDouble("R.VALOR"));
+							String fdePago = resultSet.getString("R.FORMA_DE_PAGO");
+							
+							var reserva = new Reserva(reservaID,fechaE,fechaS,precio,fdePago);
+									
+										resultado.add(reserva);
+										
+									
+						}
+					};
+							
+						
+				}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		
+		return resultado;
+	}
 	
 }

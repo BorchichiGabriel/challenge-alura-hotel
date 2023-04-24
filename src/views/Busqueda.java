@@ -35,6 +35,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.sql.Date;
+import java.awt.Component;
 
 @SuppressWarnings("serial")
 public class Busqueda extends JFrame {
@@ -74,6 +75,7 @@ public class Busqueda extends JFrame {
 		
 		this.reservasController = new ReservasController();
 		this.huespedesController = new HuespedesController();
+	
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Busqueda.class.getResource("/imagenes/lupa2.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -251,6 +253,7 @@ public class Busqueda extends JFrame {
 					JOptionPane.showMessageDialog(null, "Por favor rellene el cuadro de busqueda");
 				}else if(tbReservas.isEnabled() && esInteger(txtBuscar.getText())) {
 					cargaReporte();
+					
 				}else {
 					cargaReporteApellidos();
 				}
@@ -278,9 +281,14 @@ public class Busqueda extends JFrame {
 					JOptionPane.showMessageDialog(null, "Realice una busqueda especifica antes de proceder a editar un item por favor");
 				}else if(tbReservas.isEnabled() && esInteger(txtBuscar.getText())) {
 					modificar();
+					
 				}else {
 					modificarHuesped();
 				}
+				Busqueda busqueda = new Busqueda();
+				busqueda.setVisible(true);
+				dispose();
+				
 			}
 		});
 		lblEditar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -303,10 +311,15 @@ public class Busqueda extends JFrame {
 				if(txtBuscar.getText().isEmpty()){
 					JOptionPane.showMessageDialog(null, "Realice una busqueda especifica antes de proceder a eliminar un item por favor");
 				}else if(tbReservas.isEnabled() && esInteger(txtBuscar.getText())) {
+					
 					eliminarReserva();
+					
 				}else {
 					eliminarHuesped();
 				}
+				Busqueda busqueda = new Busqueda();
+				busqueda.setVisible(true);
+				dispose();
 			}
 		});
 		lblEliminar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -315,6 +328,7 @@ public class Busqueda extends JFrame {
 		lblEliminar.setBounds(0, 0, 122, 35);
 		btnEliminar.add(lblEliminar);
 		setResizable(false);
+		recargarTablas();
 	}
 	
 	private void cargaReporte() {
@@ -347,6 +361,37 @@ public class Busqueda extends JFrame {
         });
     }
 	
+	private void cargarTablaReservas() {
+		var contenido = reservasController.cargar();
+        
+        
+        contenido.forEach(reserva -> {
+        	modelo.addRow(new Object[] { reserva.getId()
+        			, reserva.getFechaE()
+        			, reserva.getFechaS()
+        			, reserva.getValor()
+        			, reserva.getFormaPago()});
+        });
+	}
+	private void cargarTablaHuespedes() {
+		var contenido = huespedesController.cargar();
+        
+        
+        contenido.forEach(huesped -> {
+        	modeloHuesped.addRow(new Object[] { huesped.getId()
+        			, huesped.getNombre()
+        			, huesped.getApellido()
+        			, huesped.getFechaNac()
+        			, huesped.getNacionalidad()
+        			, huesped.getTelefono()
+        			, huesped.getIdReserva()});
+        });
+	}
+	
+	private void recargarTablas() {
+		cargarTablaReservas();
+		cargarTablaHuespedes();
+	}
 	
 	private void modificar() {
 	    // Verificar si hay filas seleccionadas

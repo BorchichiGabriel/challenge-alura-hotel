@@ -35,4 +35,8 @@ public class HuespedesController {
 		int result = this.huespedesDao.eliminar(id);
 		return result;
 	}
+
+	public List<Huespedes> cargar() {
+		return this.huespedesDao.cargarHuespedes();
+	}
 }

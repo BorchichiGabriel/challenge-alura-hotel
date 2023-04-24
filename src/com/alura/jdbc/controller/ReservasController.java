@@ -22,6 +22,11 @@ public class ReservasController {
 	public List<Reserva> listar(Integer nroReserva){
 		return this.reservasDao.listarReservas(nroReserva);
 	}
+	
+	public List<Reserva> cargar(){
+		return this.reservasDao.mostrarReservas();
+	}
+	
 	public int modificar(Integer id, Date fechaE, Date fechaS, String valor, String formaPago) {
 		int result = this.reservasDao.modificar(id, fechaE, fechaS, valor, formaPago);
 		return result;
@@ -30,6 +35,8 @@ public class ReservasController {
 		int result = reservasDao.eliminar(id);
 		return result;
 	}
+	
+	
 	
 
 }
