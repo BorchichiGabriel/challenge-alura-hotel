@@ -4,9 +4,9 @@ El Challenge Alura Hotel es un proyecto de software construido en Java versión 
 ## 🚀 Instalación
 No se requiere instalador. Puedes seguir los siguientes pasos para utilizar el programa:
 
--Descarga el archivo .zip del proyecto.
--Descomprime el archivo en tu PC.
--Ejecuta el programa.
+- Descarga el archivo .zip del proyecto.
+- Descomprime el archivo en tu PC.
+- Ejecuta el programa.
 
 ## 💻 Uso
 -El Challenge Alura Hotel es un sistema de reservas para un hotel que cuenta con las siguientes características:
